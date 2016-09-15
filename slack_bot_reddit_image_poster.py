@@ -1,6 +1,6 @@
 from slackclient import SlackClient
 import praw
-import time
+from time import sleep
 import random
 import os
 
@@ -13,10 +13,9 @@ def getPosts(subreddit):
     r = praw.Reddit(user_agent=user_agent)
     subreddit = r.get_subreddit(subreddit)
     url_list = []
-    random_image = random.randrange(0, 99)
     for submission in subreddit.get_new(limit=100):  # get 100 new submissions
         url_list.append(str(submission.url))
-    return url_list[random_image]
+    return random.choice(url_list)
 
 
 def main():
@@ -45,7 +44,7 @@ def main():
                 if not message or not user:
                     continue
             # Sleep for half a second
-            time.sleep(0.5)
+            sleep(0.5)
 
 
 if __name__ == '__main__':
