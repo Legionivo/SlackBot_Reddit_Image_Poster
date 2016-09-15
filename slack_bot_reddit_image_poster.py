@@ -2,11 +2,11 @@ from slackclient import SlackClient
 import praw
 import time
 import random
+import os
 
-BOT_TOKEN = "xoxp-xxxxx-xxxxxxx"
+BOT_TOKEN = os.getenv('BOT_TOKEN')
 
-CHANNEL_ID = "xxxxxxxxx"  # channel ID, or just use channel name
-
+CHANNEL_ID = os.getenv('CHANNEL_ID')  # channel ID, or just use channel name
 
 def getPosts(subreddit):
     user_agent = ("User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0")
