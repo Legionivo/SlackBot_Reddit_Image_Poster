@@ -33,9 +33,9 @@ def main():
                 message = slack_message.get("text")
                 if message == "!help":
                     sc.rtm_send_message(CHANNEL_ID,
-                                        " It's time to have fun!!! I'm pulling the newest fap content from reddit. "
+                                        " It's time to have fun!!! I'm pulling the newest fun content from reddit. "
                                         " The following commands are currently supported: `!pics, !funny, !cats`. "
-                                        "Don't forget to wash your hands after watching :)")
+                                        " Enjoy watching :)")
                 subreddits = (
                     'pics', 'funny', 'cats')
                 for key in subreddits:
