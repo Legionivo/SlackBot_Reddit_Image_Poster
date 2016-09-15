@@ -1,0 +1,52 @@
+from slackclient import SlackClient
+import praw
+import time
+import random
+
+BOT_TOKEN = "xoxp-xxxxx-xxxxxxx"
+
+CHANNEL_ID = "xxxxxxxxx"  # channel ID, or just use channel name
+
+
+def getPosts(subreddit):
+    user_agent = ("User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0")
+    r = praw.Reddit(user_agent=user_agent)
+    subreddit = r.get_subreddit(subreddit)
+    url_list = []
+    random_image = random.randrange(0, 99)
+    for submission in subreddit.get_new(limit=100):  # get 100 new submissions
+        url_list.append(str(submission.url))
+    return url_list[random_image]
+
+
+def main():
+    # Create the slackclient instance
+    sc = SlackClient(BOT_TOKEN)
+    # Connect to slack
+    if sc.rtm_connect():
+
+        while True:
+            # Read latest messages
+            for slack_message in sc.rtm_read():
+                if slack_message.get("channel") != CHANNEL_ID:
+                    break
+                message = slack_message.get("text")
+                if message == "!help":
+                    sc.rtm_send_message(CHANNEL_ID,
+                                        " It's time to have fun!!! I'm pulling the newest fap content from reddit. "
+                                        " The following commands are currently supported: `!pics, !funny, !cats`. "
+                                        "Don't forget to wash your hands after watching :)")
+                subreddits = (
+                    'pics', 'funny', 'cats')
+                for key in subreddits:
+                    if message == "!" + key:
+                        sc.rtm_send_message(CHANNEL_ID, getPosts(str(key)))
+                user = slack_message.get("user")
+                if not message or not user:
+                    continue
+            # Sleep for half a second
+            time.sleep(0.5)
+
+
+if __name__ == '__main__':
+    main()
