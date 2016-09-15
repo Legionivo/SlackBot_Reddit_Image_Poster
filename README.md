@@ -30,6 +30,5 @@ export CHANNEL_ID="XXXXXXXXX" (or you can just use channel name like general, et
 
 python slack_bot_reddit_image_poster.py
 
-Enjoy! 
-
  ```
+ Enjoy!
