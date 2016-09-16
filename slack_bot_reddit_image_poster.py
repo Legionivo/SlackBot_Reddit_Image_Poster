@@ -8,15 +8,20 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 
 CHANNEL_ID = os.getenv('CHANNEL_ID')  # channel ID, or just use channel name
 
-def getPosts(subreddit):
+def get_posts(subreddit):
     user_agent = ("User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0")
     r = praw.Reddit(user_agent=user_agent)
     subreddit = r.get_subreddit(subreddit)
     url_list = []
     for submission in subreddit.get_new(limit=100):  # get 100 new submissions
         url_list.append(str(submission.url))
-    return random.choice(url_list)
+    return url_list
 
+def random_pic_choice(ul=get_posts()):
+    i = random.choice(url_list)
+    url_list.remove(i)
+    return i
+    
 
 def main():
     # Create the slackclient instance
@@ -39,7 +44,7 @@ def main():
                     'pics', 'funny', 'cats')
                 for key in subreddits:
                     if message == "!" + key:
-                        sc.rtm_send_message(CHANNEL_ID, getPosts(str(key)))
+                        sc.rtm_send_message(CHANNEL_ID, random_pic_choice(str(key)))
                 user = slack_message.get("user")
                 if not message or not user:
                     continue
