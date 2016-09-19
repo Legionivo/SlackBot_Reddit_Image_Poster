@@ -18,8 +18,8 @@ def get_posts(subreddit):
     return url_list
 
 def random_pic_choice(ul=get_posts()):
-    i = random.choice(url_list)
-    url_list.remove(i)
+    i = random.choice(ul)
+    ul.remove(i)
     return i
     
 
