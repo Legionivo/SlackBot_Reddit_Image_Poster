@@ -12,17 +12,22 @@ subreddits = ('pics', 'funny', 'cats', 'aww', 'gifs')
 
 help_message = " It's time to have fun!!! I'm pulling the newest fun content from reddit.The following commands" \
                " are currently supported:" + "`" + "!" + ", !".join(subreddits) + "`" + \
-               ". Thanks for watching :)"
+               " And type" + "`"+ "!command hot" + "`" + "to get hottest pictures! Thanks for watching :)"
 
-def getPosts(subreddit):
+def get_posts(subreddit, position):
     user_agent = ("User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0")
     r = praw.Reddit(user_agent=user_agent)
     try:
         subreddit = r.get_subreddit(subreddit)
         url_list = []
-        for submission in subreddit.get_new(limit=100):  # get 100 new submissions
-            url_list.append(str(submission.url))
-        return random.choice(url_list)
+        if position == "new":
+            for submission in subreddit.get_new(limit=100):  # get 100 new submissions
+                url_list.append(str(submission.url))
+            return random.choice(url_list)
+        elif position == "hot":
+            for submission in subreddit.get_hot(limit=100):  # get 100 hot submissions
+                url_list.append(str(submission.url))
+            return random.choice(url_list)
     except (praw.errors.PRAWException, praw.errors.HTTPException) as e:
         print e
         pass
@@ -45,9 +50,11 @@ def main():
                     continue
                 if message == "!help":
                     sc.rtm_send_message(CHANNEL_ID, help_message)
-                for key in subreddits:
+                                for key in subreddits:
                     if message == "!" + key:
-                        sc.rtm_send_message(CHANNEL_ID, get_posts(str(key)))
+                        sc.rtm_send_message(CHANNEL_ID, get_posts(str(key), "new"))
+                    if message == "!" + key + " hot":
+                        sc.rtm_send_message(CHANNEL_ID, get_posts(str(key), "hot"))
         # Sleep for half a second
         sleep(0.5)
 
