@@ -17,11 +17,15 @@ help_message = " It's time to have fun!!! I'm pulling the newest fun content fro
 def getPosts(subreddit):
     user_agent = ("User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0")
     r = praw.Reddit(user_agent=user_agent)
-    subreddit = r.get_subreddit(subreddit)
-    url_list = []
-    for submission in subreddit.get_new(limit=100):  # get 100 new submissions
-        url_list.append(str(submission.url))
-    return random.choice(url_list)
+    try:
+        subreddit = r.get_subreddit(subreddit)
+        url_list = []
+        for submission in subreddit.get_new(limit=100):  # get 100 new submissions
+            url_list.append(str(submission.url))
+        return random.choice(url_list)
+    except (praw.errors.PRAWException, praw.errors.HTTPException) as e:
+        print e
+        pass
 
 
 def main():
