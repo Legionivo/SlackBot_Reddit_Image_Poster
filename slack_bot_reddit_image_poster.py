@@ -8,6 +8,12 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 
 CHANNEL_ID = os.getenv('CHANNEL_ID')  # channel ID, or just use channel name
 
+subreddits = ('pics', 'funny', 'cats', 'aww', 'gifs')
+
+help_message = " It's time to have fun!!! I'm pulling the newest fun content from reddit.The following commands" \
+               " are currently supported:" + "`" + "!" + ", !".join(subreddits) + "`" + \
+               ". Thanks for watching :)"
+
 def getPosts(subreddit):
     user_agent = ("User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0")
     r = praw.Reddit(user_agent=user_agent)
@@ -30,21 +36,16 @@ def main():
                 if slack_message.get("channel") != CHANNEL_ID:
                     break
                 message = slack_message.get("text")
-                if message == "!help":
-                    sc.rtm_send_message(CHANNEL_ID,
-                                        " It's time to have fun!!! I'm pulling the newest fun content from reddit. "
-                                        " The following commands are currently supported: `!pics, !funny, !cats`. "
-                                        " Enjoy watching :)")
-                subreddits = (
-                    'pics', 'funny', 'cats')
-                for key in subreddits:
-                    if message == "!" + key:
-                        sc.rtm_send_message(CHANNEL_ID, getPosts(str(key)))
                 user = slack_message.get("user")
                 if not message or not user:
                     continue
-            # Sleep for half a second
-            sleep(0.5)
+                if message == "!help":
+                    sc.rtm_send_message(CHANNEL_ID, help_message)
+                for key in subreddits:
+                    if message == "!" + key:
+                        sc.rtm_send_message(CHANNEL_ID, get_posts(str(key)))
+        # Sleep for half a second
+        sleep(0.5)
 
 
 if __name__ == '__main__':
