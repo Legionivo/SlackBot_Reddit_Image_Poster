@@ -12,8 +12,11 @@ subreddits = ('pics', 'funny', 'cats', 'aww', 'gifs')
 
 help_message = " It's time to have fun!!! I'm pulling the newest fun content from reddit.The following commands" \
                " are currently supported:" + "`" + "!" + ", !".join(subreddits) + "`" + \
-               " And type" + "`"+ "!command hot" + "`" + "to get hottest pictures! Thanks for watching :)"
-
+               " And type " + "`" + "!command new" + "`" + " to get *newest* pictures! " \
+               " And type " + "`" + "!command some_number from 2 to 10 (new also acceptable)" + "`" + " to get *several* pictures! " \
+               " Thanks for watching :)"
+   
+  
 def get_posts(subreddit, position):
     user_agent = ("User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0")
     r = praw.Reddit(user_agent=user_agent)
