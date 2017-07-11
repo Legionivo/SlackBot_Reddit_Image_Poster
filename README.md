@@ -8,7 +8,7 @@ Requirements
 | Requirements                        | Version/Comment |  URL                                          |
 | ----------------------------------- |:---------------:|:---------------------------------------------:|
 | SlackClient                         | 1.0.1           | https://github.com/slackhq/python-slackclient |
-| PRAW: The Python Reddit Api Wrapper | >=3.5.0         | http://praw.readthedocs.io/en/stable/         |
+| PRAW: The Python Reddit Api Wrapper | <=3.6.0         | http://praw.readthedocs.io/en/stable/         |
 
 
 Installation
